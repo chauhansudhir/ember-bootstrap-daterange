@@ -51,7 +51,7 @@ export default Ember.Component.extend({
   },
 
   _setStart: function() {
-    if (this.state === 'inDOM') {
+    if (this.get('state') === 'inDOM') {
       var dateRangePickerObject = this.$().data('daterangepicker');
       if (dateRangePickerObject) {
         dateRangePickerObject.setStartDate(this.get('startDate'));
@@ -60,7 +60,7 @@ export default Ember.Component.extend({
   },
 
   _setEnd: function() {
-    if (this.state === 'inDOM') {
+    if (this.get('state') === 'inDOM') {
       var dateRangePickerObject = this.$().data('daterangepicker');
       if (dateRangePickerObject) {
         dateRangePickerObject.setEndDate(this.get('endDate'));
@@ -75,7 +75,7 @@ export default Ember.Component.extend({
       currentComponent.set('startDate', start);
       currentComponent.set('endDate', end);
     };
-    if (this.state === 'inDOM') {
+    if (this.get('state') === 'inDOM') {
       var dateRangePickerObject = this.$().data('daterangepicker');
       if (dateRangePickerObject) {
         dateRangePickerObject.setOptions(this.get('jQueryOptions'),
@@ -99,7 +99,7 @@ export default Ember.Component.extend({
 
   willDestroyElement: function() {
     this._super.apply(this, arguments);
-    if (this.state === 'inDOM' && this.$().data('daterangepicker')) {
+    if (this.get('state') === 'inDOM' && this.$().data('daterangepicker')) {
       this.$().daterangepicker('remove');
     }
   }
