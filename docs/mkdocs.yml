@@ -1,0 +1,10 @@
+site_name: Ember Bootstrap Daterange
+repo_url: 'https://github.com/wedgex/ember-bootstrap-daterange'
+repo_name: 'GitHub'
+site_dir: '../tests/dummy/public/docs'
+theme: readthedocs
+use_directory_urls: false
+strict: true
+extra_css: ['style.css']
+pages:
+- Home: 'index.md'

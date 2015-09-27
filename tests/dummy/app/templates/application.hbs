@@ -1,12 +1,28 @@
 <h1>Bootstrap Daterange</h1>
 <label>Start</label>
-{{bootstrap-daterange-picker singleDatePicker=true startDate=start}}
+{{ember-bootstrap-daterange singleDatePicker=true startDate=start showDaterangepicker="showDaterangepicker" hideDaterangepicker="hideDaterangepicker"}}
 
 <label>End</label>
-{{bootstrap-daterange-picker singleDatePicker=true startDate=end}}
+{{ember-bootstrap-daterange singleDatePicker=true startDate=end}}
 <br />
 
 <button {{action 'go'}}>Go</button>
 <button {{action 'addRanges'}}>Add Ranges</button>
 
-{{bootstrap-daterange-picker ranges=ranges startDate=start endDate=end}}
+{{ember-bootstrap-daterange ranges=ranges startDate=start endDate=end}}
+
+<br />
+<br />
+
+<label>Date & Time</label>
+{{ember-bootstrap-daterange
+  startDate=start
+  endDate=end
+  timePicker=true
+  timePickerSeconds=false
+  timePicker12Hour=false
+  timePickerIncrement=60
+  disabled=false
+  class="ember-view ember-text-field"
+  format="MM/DD/YYYY HH:00"
+}}

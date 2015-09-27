@@ -1,10 +1,5 @@
 # Ember-bootstrap-daterange #
 
-[![Build Status](https://travis-ci.org/chauhansudhir/ember-bootstrap-daterange.svg?branch=master)](https://travis-ci.org/chauhansudhir/ember-bootstrap-daterange)
-[![Code Climate](https://codeclimate.com/github/chauhansudhir/ember-bootstrap-daterange/badges/gpa.svg)](https://codeclimate.com/github/chauhansudhir/ember-bootstrap-daterange)
-[![Test Coverage](https://codeclimate.com/github/chauhansudhir/ember-bootstrap-daterange/badges/coverage.svg)](https://codeclimate.com/github/chauhansudhir/ember-bootstrap-daterange/coverage)
-
-
 Ember add-on-ification of [bootstrap daterangepicker](https://github.com/dangrossman/bootstrap-daterangepicker).
 
 ## Features ##

@@ -1,6 +1,7 @@
 import Ember from 'ember';
 
-var jqueryAttrs = [
+const runOnce = Ember.run.once;
+const jqueryAttrs = [
   'startDate',
   'endDate',
   'minDate',
@@ -25,82 +26,106 @@ var jqueryAttrs = [
   'parentEl'
 ];
 
+const {computed, observer} = Ember;
+
 export default Ember.Component.extend({
   tagName: 'input',
+  /*
+  * dtPicket is an object of daterangecalendar useful for setting startDate and endDate
+  */
+  dtPicker: null,
 
-  jQueryOptions: Ember.computed(jqueryAttrs.join(','), function() {
-    var options = {};
-    var self = this;
+  /*
+  * dtPicket is an object of daterangecalendar useful for setting events
+  * dtPicket.on("cancel.daterangepicker", function(e){});
+  */
+  dateRangePicker: null,
 
-    jqueryAttrs.forEach(function(attr) {
-      options[attr] = self.get(attr);
-    });
-    return options;
+  /**
+  * this method computed on daterangepicker properties e.g startDate
+  * and other observer which keeps an eye on jQueryOptions properties
+  * change to update calendar options
+  */
+  jQueryOptions: computed(jqueryAttrs.join(","), {
+    get() {
+      var options = {};
+      var self = this;
+      jqueryAttrs.forEach((attr) => {
+        options[attr] = self.get(attr);
+      });
+      return options;
+    }
   }),
 
-  didInsertElement: function() {
-    this._super.apply(this, arguments);
+  /**
+   * this method schedule a calender creation task after insertion on calender into the dom
+   */
+  onDidInsertElement: Ember.on("didInsertElement", function() {
+    this._super(...arguments);
     Ember.run.schedule('afterRender', this, this._renderDatePicker);
-  },
-
-  _renderDatePicker: function() {
-    this.$().daterangepicker();
-    this._setOptions();
-    this._setStart();
-    this._setEnd();
-  },
-
-  _setStart: function() {
-    if (this.state === 'inDOM') {
-      var dateRangePickerObject = this.$().data('daterangepicker');
-      if (dateRangePickerObject) {
-        dateRangePickerObject.setStartDate(this.get('startDate'));
-      }
-    }
-  },
-
-  _setEnd: function() {
-    if (this.state === 'inDOM') {
-      var dateRangePickerObject = this.$().data('daterangepicker');
-      if (dateRangePickerObject) {
-        dateRangePickerObject.setEndDate(this.get('endDate'));
-      }
-    }
-  },
-
-  _setOptions: function() {
-    var currentComponent = this;
-    var changeCallback = function(start, end, label) {
-
-      currentComponent.set('startDate', start);
-      currentComponent.set('endDate', end);
-    };
-    if (this.state === 'inDOM') {
-      var dateRangePickerObject = this.$().data('daterangepicker');
-      if (dateRangePickerObject) {
-        dateRangePickerObject.setOptions(this.get('jQueryOptions'),
-          changeCallback);
-      }
-    }
-  },
-
-  startDateDidChange: Ember.observer('startDate',function() {
-    Ember.run.once(this, this._setStart);
   }),
 
-  endDateDidChange: Ember.observer('endDate',function() {
-    Ember.run.once(this, this._setEnd);
+  /**
+  * render date range picker control and setup dtPicker and dateRangePicker properties
+  */
+  _renderDatePicker() {
+    let dateRangePicker = this.$().daterangepicker(this.get('jQueryOptions'));
+    let dt = this.$().data('daterangepicker');
+    this.set('dtPicker', dt);
+    this.set('dateRangePicker', dateRangePicker);
+  },
 
-  }),
-
-  dateOptionsChanged: Ember.observer('jQueryOptions',function() {
-    Ember.run.once(this, this._setOptions);
-  }),
-
-  willDestroyElement: function() {
-    this._super.apply(this, arguments);
-    if (this.state === 'inDOM' && this.$().data('daterangepicker')) {
-      this.$().daterangepicker('remove');
+  /*
+  * setStart date of a calender
+  */
+  _setStart() {
+    let dt = this.get('dtPicker');
+    if (dt) {
+      dt.setStartDate(this.get('startDate'));
     }
-  }
+  },
+
+  /*
+  * setEnd date of a calender
+  */
+  _setEnd() {
+    let dt = this.get('dtPicker');
+    if (dt) {
+      dt.setEndDate(this.get('endDate'));
+    }
+  },
+
+  /*
+  * observe on start Date change
+  */
+  startDateDidChange: observer('startDate',function() {
+    runOnce(this, this._setStart);
+  }),
+
+  /*
+  * observe on end Date change
+  */
+  endDateDidChange: observer('endDate',function() {
+    runOnce(this, this._setEnd);
+  }),
+
+  /*
+  * observe on any other option change and re-render daterangepicker
+  */
+  dateOptionsChanged: observer('jQueryOptions',function() {
+    runOnce(this, this._renderDatePicker);
+  }),
+
+ /**
+  * destory all objects
+  */
+  onWillDestroyElement: Ember.on("willDestroyElement", function() {
+    this._super(...arguments);
+    let dt = this.get('dtPicker');
+    if (dt) {
+      dt.remove();
+      this.set('dtPicker', null);
+      this.set('dateRangePicker', null);
+    }
+  })
 });
