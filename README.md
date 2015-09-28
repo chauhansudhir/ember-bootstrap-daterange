@@ -19,19 +19,19 @@ Bootstrap 3.0+
 ## Examples
 Simple date range picker with start and end dates bound.
 ```
-  {{bootstrap-daterange-picker startDate=start endDate=end}}
+  {{ember-bootstrap-daterange startDate=start endDate=end}}
 ```
 ## Documentation ##
 Detailed documentation can be found [here](http://github.io/bootstrap-daterangepicker/docs)
 
 Single date picker with value bound.
 ```
-  {{bootstrap-daterange-picker singleDatePicker=true startDate=date}}
+  {{ember-bootstrap-daterange singleDatePicker=true startDate=date}}
 ```
 
 Range date picker with value bound.
 ```
-{{bootstrap-daterange-picker
+{{ember-bootstrap-daterange
   startDate=start
   endDate=end
   timePicker=true
