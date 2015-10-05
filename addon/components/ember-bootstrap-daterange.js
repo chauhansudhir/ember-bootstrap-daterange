@@ -46,29 +46,30 @@ export default Ember.Component.extend({
   * and other observer which keeps an eye on jQueryOptions properties
   * change to update calendar options
   */
-  jQueryOptions: computed(jqueryAttrs.join(","), {
-    get() {
-      var options = {};
-      var self = this;
-      jqueryAttrs.forEach((attr) => {
-        options[attr] = self.get(attr);
-      });
-      return options;
-    }
+  jQueryOptions: computed(jqueryAttrs.join(","), function() {
+    var options = {};
+    jqueryAttrs.forEach((attr) => {
+      options[attr] = this.get(attr);
+    });
+    return options;
   }),
 
   /**
    * this method schedule a calender creation task after insertion on calender into the dom
    */
-  onDidInsertElement: Ember.on("didInsertElement", function() {
+  didInsertElement() {
     this._super(...arguments);
     Ember.run.schedule('afterRender', this, this._renderDatePicker);
-  }),
+  },
 
   /**
   * render date range picker control and setup dtPicker and dateRangePicker properties
   */
   _renderDatePicker() {
+    if(this.isDestroyed || this.isDestroying) {
+      return;
+    }
+
     let dateRangePicker = this.$().daterangepicker(this.get('jQueryOptions'));
     let dt = this.$().data('daterangepicker');
     this.set('dtPicker', dt);
@@ -119,7 +120,7 @@ export default Ember.Component.extend({
  /**
   * destory all objects
   */
-  onWillDestroyElement: Ember.on("willDestroyElement", function() {
+  willDestroyElement() {
     this._super(...arguments);
     let dt = this.get('dtPicker');
     if (dt) {
@@ -127,5 +128,5 @@ export default Ember.Component.extend({
       this.set('dtPicker', null);
       this.set('dateRangePicker', null);
     }
-  })
+  }
 });
