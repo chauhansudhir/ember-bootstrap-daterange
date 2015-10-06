@@ -12,7 +12,7 @@ const jqueryAttrs = [
   'showWeekNumbers',
   'timePicker',
   'timePickerIncrement',
-  'timePicker12Hour',
+  'timePicker24Hour',
   'timePickerSeconds',
   'ranges',
   'opens',

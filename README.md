@@ -36,7 +36,7 @@ Range date picker with value bound.
   endDate=end
   timePicker=true
   timePickerSeconds=false
-  timePicker12Hour=false
+  timePicker24Hour=true
   timePickerIncrement=60
   disabled=false
   class="ember-view ember-text-field"
