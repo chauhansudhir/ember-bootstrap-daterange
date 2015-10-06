@@ -6,9 +6,8 @@ module.exports = {
 
   afterInstall: function(options) {
     var that = this;
-
     return this.addBowerPackageToProject('moment').then(function() {
-      return that.addBowerPackageToProject('ember-bootstrap-daterange');
+      // return that.addBowerPackageToProject('ember-bootstrap-daterange');
     });
   }
 
